@@ -2,7 +2,6 @@ import { Chess } from "./node_modules/chess.js/dist/esm/chess.js";
 window.board = null
 window.$status = $('#status')
 var moveid = 1
-var position = 0
 var curBackPos = 0
 var UIPosition = ["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"]
 var LogicPostion = ["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"]
@@ -15,6 +14,19 @@ window.backwardButton = () => {
   board.position(curUIPos)
   console.log(chess.ascii())
   updateStatus()
+  const inputs = document.querySelectorAll('input[type="text"]');
+  for (let index = 0; index < inputs.length; ++index) {
+    if (inputs[index].value !== "") {
+        continue  
+    } else{
+      inputs[index - 1].value = ""
+      if (inputs[index - 1].classList.contains("input-box2")){
+        document.getElementById(`move${moveid}`).remove()
+        moveid -= 1
+      }
+      break
+    }
+  }
 }
 
 window.forwardButton = () => {
@@ -25,6 +37,16 @@ window.forwardButton = () => {
   board.position(curUIPos)
   console.log(chess.ascii())
   updateStatus()
+}
+
+window.controlMoveHistory = () => {
+  if (curBackPos + 1 < UIPosition.length) {
+    var difference = UIPosition.length - curBackPos
+    for (let i = 0; i < difference; i++) {
+      UIPosition.pop();
+      LogicPostion.pop();
+    }
+  }
 }
 
 window.checkMove = (input) => {
@@ -38,12 +60,19 @@ window.checkMove = (input) => {
           console.log(`Move successful: ${move}`);
         }
         updateBoard()
-        if (input.id === "input-box2"){
+        if (input.classList.contains('input-box2')){
           addInputBox()
         }
       }
     });
     
+}
+
+window.onMoveEnd = (oldPos, newPos) => {
+  controlMoveHistory()
+  UIPosition.push(Chessboard.objToFen(newPos))
+  LogicPostion.push(chess.fen())
+  curBackPos = UIPosition.length - 1
 }
 
 
@@ -68,27 +97,32 @@ window.onDragStart  = (source, piece, position, orientation) => {
 }
 
 window.onDrop = (source, target, piece, newPos, oldPos, orientation) => {
-  var move = chess.move({
-    from: source,
-    to: target,
-  })
-  if (curBackPos + 1 < UIPosition.length) {
-    var difference = UIPosition.length - curBackPos
-    for (let i = 0; i < difference; i++) {
-      UIPosition.pop();
-      LogicPostion.pop();
-    }
+  try {
+    var move = chess.move({
+      from: source,
+      to: target,
+    })
+  } catch{
+    return 'snapback'
+  }
+  
+  controlMoveHistory()
+  
+  var movePiece = piece.split("")[1]
+  if (movePiece === 'P'){
+    movePiece = ''
   }
  
   UIPosition.push(Chessboard.objToFen(newPos))
   LogicPostion.push(chess.fen())
   curBackPos = UIPosition.length - 1
-  console.log(UIPosition)
-  console.log(LogicPostion)
   const inputs = document.querySelectorAll('input[type="text"]');
   for (let index = 0; index < inputs.length; ++index) {
     if (inputs[index].value === "") {
-      inputs[index].value = target;
+        inputs[index].value = movePiece + target;
+      if (inputs[index].classList.contains("input-box2")){
+        addInputBox()
+      }
       break
   }
 }
@@ -146,6 +180,7 @@ $(document).ready(function () {
     onDrop: onDrop,
     onSnapEnd: updateBoard,
     onDragStart: onDragStart,
+    onMoveEnd: onMoveEnd
   };
   window.board = Chessboard('myBoard', config)
   updateStatus()
