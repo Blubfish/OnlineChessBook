@@ -19,3 +19,11 @@ body {
   background-color: antiquewhite;
   padding: 5px;
 }
+
+#moveButton{
+  margin-bottom: 10px;
+}
+
+#status{
+  margin-bottom: 10px;
+}

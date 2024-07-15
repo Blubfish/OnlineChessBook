@@ -126,7 +126,6 @@ window.onDrop = (source, target, piece, newPos, oldPos, orientation) => {
       break
   }
 }
-  if (move === null) return 'snapback'
   updateStatus()
 }
 
