@@ -1,0 +1,21 @@
+body {
+  font-family: Arial, sans-serif;
+}
+
+#myBoard {
+  margin: 20px auto;
+}
+
+#backward{
+  border-radius: 50px;
+  width: 100px;
+  background-color: antiquewhite;
+  padding: 5px;
+}
+
+#forward{
+  border-radius: 50px;
+  width: 100px;
+  background-color: antiquewhite;
+  padding: 5px;
+}
