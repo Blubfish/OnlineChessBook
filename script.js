@@ -3,47 +3,52 @@ window.board = null
 window.$status = $('#status')
 var moveid = 1
 var curBackPos = 0
-var UIPosition = ["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR"]
-var LogicPostion = ["rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1"]
+var LogicPostion = ['rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1']
 
 window.backwardButton = () => {
-  curBackPos -= 1
-  var curUIPos = UIPosition[curBackPos]
-  var curLogicPos = LogicPostion[curBackPos]
-  chess.load(curLogicPos)
-  board.position(curUIPos)
-  console.log(chess.ascii())
-  updateStatus()
-  const inputs = document.querySelectorAll('input[type="text"]');
-  for (let index = 0; index < inputs.length; ++index) {
-    if (inputs[index].value !== "") {
-        continue  
-    } else{
-      inputs[index - 1].value = ""
-      if (inputs[index - 1].classList.contains("input-box2")){
-        document.getElementById(`move${moveid}`).remove()
-        moveid -= 1
-      }
-      break
+  if (curBackPos > 0){
+    curBackPos -= 1
+    var curLogicPos = LogicPostion[curBackPos]
+    chess.load(curLogicPos)
+    board.position(curLogicPos)
+    
+    console.log(chess.ascii())
+    updateStatus()
     }
-  }
+  
 }
 
 window.forwardButton = () => {
-  curBackPos += 1
-  var curUIPos = UIPosition[curBackPos]
-  var curLogicPos = LogicPostion[curBackPos]
-  chess.load(curLogicPos)
-  board.position(curUIPos)
-  console.log(chess.ascii())
-  updateStatus()
+  if (curBackPos + 1< LogicPostion.length){
+    curBackPos += 1
+    var curLogicPos = LogicPostion[curBackPos]
+    chess.load(curLogicPos)
+    board.position(curLogicPos)
+    console.log(chess.ascii())
+    updateStatus()
+    console.log(curBackPos)
+  }
+  
 }
 
 window.controlMoveHistory = () => {
-  if (curBackPos + 1 < UIPosition.length) {
-    var difference = UIPosition.length - curBackPos
-    for (let i = 0; i < difference; i++) {
-      UIPosition.pop();
+  if (curBackPos + 1 < LogicPostion.length) {
+    var difference = LogicPostion.length - (curBackPos + 1)
+    const inputs = document.querySelectorAll('input[type="text"]');
+    for (let i = 0; i < difference; i++) {  
+      for (let index = 0; index < inputs.length; ++index) {
+        if (inputs[index].value !== "") {
+            continue  
+        } else{
+          inputs[index - 1].value = ""
+          if (inputs[index - 1].classList.contains("input-box2")){
+            document.getElementById(`move${moveid}`).remove()
+            moveid -= 1
+          }
+          break
+        }
+      }
+      LogicPostion.pop();
       LogicPostion.pop();
     }
   }
@@ -64,15 +69,11 @@ window.checkMove = (input) => {
           addInputBox()
         }
       }
+      controlMoveHistory()
+      updateBoardHistory()
+      
     });
     
-}
-
-window.onMoveEnd = (oldPos, newPos) => {
-  controlMoveHistory()
-  UIPosition.push(Chessboard.objToFen(newPos))
-  LogicPostion.push(chess.fen())
-  curBackPos = UIPosition.length - 1
 }
 
 
@@ -96,6 +97,11 @@ window.onDragStart  = (source, piece, position, orientation) => {
   }
 }
 
+window.updateBoardHistory = () => {
+  LogicPostion.push(chess.fen())
+  curBackPos = LogicPostion.length - 1
+}
+
 window.onDrop = (source, target, piece, newPos, oldPos, orientation) => {
   try {
     var move = chess.move({
@@ -113,9 +119,7 @@ window.onDrop = (source, target, piece, newPos, oldPos, orientation) => {
     movePiece = ''
   }
  
-  UIPosition.push(Chessboard.objToFen(newPos))
-  LogicPostion.push(chess.fen())
-  curBackPos = UIPosition.length - 1
+  updateBoardHistory()
   const inputs = document.querySelectorAll('input[type="text"]');
   for (let index = 0; index < inputs.length; ++index) {
     if (inputs[index].value === "") {
@@ -126,6 +130,10 @@ window.onDrop = (source, target, piece, newPos, oldPos, orientation) => {
       break
   }
 }
+ 
+  console.log(LogicPostion)
+  console.log(LogicPostion)
+  console.log(chess.ascii())
   updateStatus()
 }
 
@@ -178,10 +186,10 @@ $(document).ready(function () {
     sparePieces: true,
     onDrop: onDrop,
     onSnapEnd: updateBoard,
-    onDragStart: onDragStart,
-    onMoveEnd: onMoveEnd
+    onDragStart: onDragStart
   };
   window.board = Chessboard('myBoard', config)
+  console.log(chess.fen())
   updateStatus()
   
 });
