@@ -49,7 +49,6 @@ window.controlMoveHistory = () => {
         }
       }
       LogicPostion.pop();
-      LogicPostion.pop();
     }
   }
 }
