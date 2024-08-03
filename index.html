@@ -4,27 +4,24 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width" />
     <title>OnlineChessBook</title>
-    <link rel="stylesheet" href="styles.css" />
-    <script src="/node_modules/jquery/dist/jquery.js"></script>
-    <script src="/node_modules/chess.js/dist/esm/chess.js" type="module"></script>
-    <script src="/node_modules/@chrisoakman/chessboardjs/dist/chessboard-1.0.0.js"></script>
-    <link rel="stylesheet" href="/node_modules/@chrisoakman/chessboardjs/dist/chessboard-1.0.0.css" />
+    <link rel="stylesheet" href="loginScreenStyle.css" />
   </head>
 
   <body>
     <center id="center">
-      <h1>Record Your Chess Game Here</h1>
-      <div id="myBoard" style="width: 400px"></div>
-      <div id="moveButton">
-        <button id="backward" onclick="backwardButton()"> < </button>
-        <button id="forward" onclick="forwardButton()"> > </button>
+      <h1>Login Here</h1>
+      <div class="form">
+        <form>
+            <div class="inputbox">
+                <input type="text" id="username">
+            </div>
+        </form>
       </div>
-      <div id="status"></div>
-      <div id="move1">
-        <input class="input-box1" type="text" oninput="checkMove(this)" />
-        <input class="input-box2" type="text" oninput="checkMove(this)" />
-      </div>
+      <button id="navigateButton"  onmouseover="hoverMouse(this)" onmouseout="noHoverMouse(this)" onclick="Login()"> Login </button>
+     
     </center>
-    <script type="module" src="script.js"></script>
+    <script src ="loginScript.js"> </script>
+    <script type="module" src="firebase.js"></script>
+    <script src="customizeJs.js"></script>
   </body>
 </html>

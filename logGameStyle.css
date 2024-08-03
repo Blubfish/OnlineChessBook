@@ -1,5 +1,6 @@
 body {
   font-family: Arial, sans-serif;
+  background-color: blanchedalmond;
 }
 
 #myBoard {
@@ -27,3 +28,21 @@ body {
 #status{
   margin-bottom: 10px;
 }
+
+#submitButton{
+  border-radius: 5px;
+  width: 100px;
+  background-color: #faebd7;
+  padding: 5px;
+}
+
+#backButton{
+  background-color: transparent;
+  background-repeat: no-repeat;
+  border: none;
+  cursor: pointer;
+  overflow: hidden;
+  outline: none;
+  color: blue;
+}
+

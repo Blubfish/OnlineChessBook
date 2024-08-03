@@ -3,7 +3,11 @@ window.board = null
 window.$status = $('#status')
 var moveid = 1
 var curBackPos = 0
-var LogicPostion = ['rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1']
+window.LogicPostion = ['rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1']
+
+window.goBack = () => {
+  window.location.href = 'mainScreen.html'
+}
 
 window.backwardButton = () => {
   if (curBackPos > 0){
