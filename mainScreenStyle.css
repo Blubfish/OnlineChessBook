@@ -27,3 +27,7 @@ body {
     background-repeat: no-repeat;
     border: none;
 }
+
+.small-board:hover {
+    transform: scale(1.05)
+}

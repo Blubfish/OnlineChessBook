@@ -40,7 +40,7 @@ window.controlMoveHistory = () => {
     var difference = LogicPostion.length - (curBackPos + 1)
     const inputs = document.querySelectorAll('input[type="text"]');
     for (let i = 0; i < difference; i++) {  
-      for (let index = 0; index < inputs.length; ++index) {
+      for (let index = 1; index < inputs.length; ++index) {
         if (inputs[index].value !== "") {
             continue  
         } else{
@@ -124,7 +124,7 @@ window.onDrop = (source, target, piece, newPos, oldPos, orientation) => {
  
   updateBoardHistory()
   const inputs = document.querySelectorAll('input[type="text"]');
-  for (let index = 0; index < inputs.length; ++index) {
+  for (let index = 1; index < inputs.length; ++index) {
     if (inputs[index].value === "") {
         inputs[index].value = movePiece + target;
       if (inputs[index].classList.contains("input-box2")){
