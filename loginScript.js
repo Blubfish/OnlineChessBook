@@ -5,5 +5,4 @@ window.Login = () => {
     setTimeout(function(){
         window.location.href = "mainScreen.html";
     }, 1000);
-   
 }

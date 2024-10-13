@@ -9,7 +9,7 @@ window.goBack = () => {
   window.location.href = 'mainScreen.html'
 }
 
-window.backwardButton = () => {
+window.undoMove = () => {
   if (curBackPos > 0){
     curBackPos -= 1
     var curLogicPos = LogicPostion[curBackPos]
@@ -40,7 +40,7 @@ window.controlMoveHistory = () => {
     var difference = LogicPostion.length - (curBackPos + 1)
     const inputs = document.querySelectorAll('input[type="text"]');
     for (let i = 0; i < difference; i++) {  
-      for (let index = 1; index < inputs.length; ++index) {
+      for (let index = 2; index < inputs.length; ++index) {
         if (inputs[index].value !== "") {
             continue  
         } else{
@@ -114,19 +114,17 @@ window.onDrop = (source, target, piece, newPos, oldPos, orientation) => {
   } catch{
     return 'snapback'
   }
+  console.log(chess.pgn())
   
   controlMoveHistory()
   
-  var movePiece = piece.split("")[1]
-  if (movePiece === 'P'){
-    movePiece = ''
-  }
+  const moveNotaion = move.san;
  
   updateBoardHistory()
   const inputs = document.querySelectorAll('input[type="text"]');
-  for (let index = 1; index < inputs.length; ++index) {
+  for (let index = 2; index < inputs.length; ++index) {
     if (inputs[index].value === "") {
-        inputs[index].value = movePiece + target;
+        inputs[index].value = moveNotaion;
       if (inputs[index].classList.contains("input-box2")){
         addInputBox()
       }
@@ -134,8 +132,6 @@ window.onDrop = (source, target, piece, newPos, oldPos, orientation) => {
   }
 }
  
-  console.log(LogicPostion)
-  console.log(LogicPostion)
   console.log(chess.ascii())
   updateStatus()
 }

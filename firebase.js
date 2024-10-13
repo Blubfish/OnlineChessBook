@@ -1,11 +1,7 @@
-// Import the functions you need from the SDKs you need
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
 import { getDatabase, ref, set } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-database.js";
-// TODO: Add SDKs for Firebase products that you want to use
-// https://firebase.google.com/docs/web/setup#available-libraries
 
-// Your web app's Firebase configuration
-// For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
   apiKey: "AIzaSyDyZfhSsmcC3KbXz6b6M3Ok4cCH4EY-R4k",
   authDomain: "onlinechessbook.firebaseapp.com",
@@ -35,6 +31,10 @@ window.writeUserData = () => {
   const username = localStorage.getItem('username');
   set(ref(db, `${username}/` + "game" + num), {
     gamePosition: window.LogicPostion
+  }).then(() => {
+    window.location.href = "mainScreen.html"
+  }).catch((error) => {
+    console.log(error);
   });
-  window.location.href = "mainScreen.html"
+  
 }

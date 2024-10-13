@@ -5,7 +5,7 @@ window.logOut = () => {
 }
 
 window.logGame = () => {
-    window.location.href = "chessGame.html"
+    window.location.href = "logGameScreen.html"
 }
 
 
