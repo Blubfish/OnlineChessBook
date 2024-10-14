@@ -1,173 +1,164 @@
 import { Chess } from "./node_modules/chess.js/dist/esm/chess.js";
-window.board = null
-window.$status = $('#status')
-var moveid = 1
-var curBackPos = 0
-window.LogicPostion = ['rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1']
+window.board = null;
+window.$status = $("#status");
+var moveid = 1;
+var curBackPos = 0;
+window.LogicPostion = [
+  "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1",
+];
 
 window.goBack = () => {
-  window.location.href = 'mainScreen.html'
-}
+  window.location.href = "mainScreen.html";
+};
 
 window.undoMove = () => {
-  if (curBackPos > 0){
-    curBackPos -= 1
-    var curLogicPos = LogicPostion[curBackPos]
-    chess.load(curLogicPos)
-    board.position(curLogicPos)
-    
-    console.log(chess.ascii())
-    updateStatus()
-    }
-  
-}
+  if (curBackPos > 0) {
+    curBackPos -= 1;
+    var curLogicPos = LogicPostion[curBackPos];
+    chess.load(curLogicPos);
+    board.position(curLogicPos);
+    console.log(chess.ascii());
+    updateStatus();
+  }
+};
 
 window.forwardButton = () => {
-  if (curBackPos + 1< LogicPostion.length){
-    curBackPos += 1
-    var curLogicPos = LogicPostion[curBackPos]
-    chess.load(curLogicPos)
-    board.position(curLogicPos)
-    console.log(chess.ascii())
-    updateStatus()
-    console.log(curBackPos)
+  if (curBackPos + 1 < LogicPostion.length) {
+    curBackPos += 1;
+    var curLogicPos = LogicPostion[curBackPos];
+    chess.load(curLogicPos);
+    board.position(curLogicPos);
+    console.log(chess.ascii());
+    updateStatus();
+    console.log(curBackPos);
   }
-  
-}
+};
 
 window.controlMoveHistory = () => {
   if (curBackPos + 1 < LogicPostion.length) {
-    var difference = LogicPostion.length - (curBackPos + 1)
+    var difference = LogicPostion.length - (curBackPos + 1);
     const inputs = document.querySelectorAll('input[type="text"]');
-    for (let i = 0; i < difference; i++) {  
+    for (let i = 0; i < difference; i++) {
       for (let index = 2; index < inputs.length; ++index) {
         if (inputs[index].value !== "") {
-            continue  
-        } else{
-          inputs[index - 1].value = ""
-          if (inputs[index - 1].classList.contains("input-box2")){
-            document.getElementById(`move${moveid}`).remove()
-            moveid -= 1
+          continue;
+        } else {
+          inputs[index - 1].value = "";
+          if (inputs[index - 1].classList.contains("input-box2")) {
+            document.getElementById(`move${moveid}`).remove();
+            moveid -= 1;
           }
-          break
+          break;
         }
       }
       LogicPostion.pop();
     }
   }
-}
+};
 
 window.checkMove = (input) => {
-    input.oninput = null
-    input.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter') {
-        const move = input.value 
-        if (chess.move(`${move}`) === null) {
-          console.log(`Invalid move: ${move}`);
-        } else {
-          console.log(`Move successful: ${move}`);
-        }
-        updateBoard()
-        if (input.classList.contains('input-box2')){
-          addInputBox()
-        }
+  input.oninput = null;
+  input.addEventListener("keydown", (event) => {
+    if (event.key === "Enter") {
+      const move = input.value;
+      if (chess.move(`${move}`) === null) {
+        console.log(`Invalid move: ${move}`);
+      } else {
+        console.log(`Move successful: ${move}`);
       }
-      controlMoveHistory()
-      updateBoardHistory()
-      
-    });
-    
-}
-
+      updateBoard();
+      if (input.classList.contains("input-box2")) {
+        addInputBox();
+      }
+    }
+    controlMoveHistory();
+    updateBoardHistory();
+  });
+};
 
 window.addInputBox = () => {
-  moveid += 1
+  moveid += 1;
   var originalDiv = document.getElementById("move1");
   var clonedDiv = originalDiv.cloneNode(true);
-  clonedDiv.id = `move${moveid}`
-  const inputs = clonedDiv.querySelectorAll('input');
+  clonedDiv.id = `move${moveid}`;
+  const inputs = clonedDiv.querySelectorAll("input");
   inputs.forEach((inputBox) => {
-    inputBox.value = ''
-  })
-  document.getElementById("center").appendChild(clonedDiv)
-}
+    inputBox.value = "";
+  });
+  document.getElementById("center").appendChild(clonedDiv);
+};
 
-window.onDragStart  = (source, piece, position, orientation) => {
-  if (chess.isGameOver()) return false
-  if ((chess.turn() === 'w' && piece.search(/^b/) !== -1) ||
-      (chess.turn() === 'b' && piece.search(/^w/) !== -1)) {
-    return false
+window.onDragStart = (source, piece, position, orientation) => {
+  if (chess.isGameOver()) return false;
+  if (
+    (chess.turn() === "w" && piece.search(/^b/) !== -1) ||
+    (chess.turn() === "b" && piece.search(/^w/) !== -1)
+  ) {
+    return false;
   }
-}
+};
 
 window.updateBoardHistory = () => {
-  LogicPostion.push(chess.fen())
-  curBackPos = LogicPostion.length - 1
-}
+  LogicPostion.push(chess.fen());
+  curBackPos = LogicPostion.length - 1;
+};
 
 window.onDrop = (source, target, piece, newPos, oldPos, orientation) => {
   try {
     var move = chess.move({
       from: source,
       to: target,
-    })
-  } catch{
-    return 'snapback'
+    });
+  } catch {
+    return "snapback";
   }
-  console.log(chess.pgn())
-  
-  controlMoveHistory()
-  
+  console.log(chess.pgn());
+
+  controlMoveHistory();
+
   const moveNotaion = move.san;
- 
-  updateBoardHistory()
+
+  updateBoardHistory();
   const inputs = document.querySelectorAll('input[type="text"]');
   for (let index = 2; index < inputs.length; ++index) {
     if (inputs[index].value === "") {
-        inputs[index].value = moveNotaion;
-      if (inputs[index].classList.contains("input-box2")){
-        addInputBox()
+      inputs[index].value = moveNotaion;
+      if (inputs[index].classList.contains("input-box2")) {
+        addInputBox();
       }
-      break
+      break;
+    }
   }
-}
- 
-  console.log(chess.ascii())
-  updateStatus()
-}
+
+  console.log(chess.ascii());
+  updateStatus();
+};
 
 window.updateBoard = () => {
-  board.position(chess.fen())
-}
+  board.position(chess.fen());
+};
 
 window.updateStatus = () => {
-  var status = ''
+  var status = "";
 
-
-  var moveColor = 'White'
-  if (chess.turn() === 'b') {
-    moveColor = 'Black'
+  var moveColor = "White";
+  if (chess.turn() === "b") {
+    moveColor = "Black";
   }
 
   if (chess.isGameOver()) {
-    status = 'Game over, ' + moveColor + ' is in checkmate.'
-  }
-
-  else if (chess.isDraw()) {
-    status = 'Game over, drawn position'
-  }
-
-  else {
-    status = moveColor + ' to move'
+    status = "Game over, " + moveColor + " is in checkmate.";
+  } else if (chess.isDraw()) {
+    status = "Game over, drawn position";
+  } else {
+    status = moveColor + " to move";
 
     if (chess.inCheck()) {
-      status += ', ' + moveColor + ' is in check'
+      status += ", " + moveColor + " is in check";
     }
   }
-  $status.html(status)
-}
-
-
+  $status.html(status);
+};
 
 $(document).ready(function () {
   if (typeof Chess !== "undefined") {
@@ -177,18 +168,17 @@ $(document).ready(function () {
   }
 
   window.config = {
-    position: 'start',
+    position: "start",
     draggable: true,
-    dropOffBoard: 'snapback',
+    dropOffBoard: "snapback",
     pieceTheme: "./images/chesspieces/wikipedia/{piece}.png",
     showNotation: true,
     sparePieces: true,
     onDrop: onDrop,
     onSnapEnd: updateBoard,
-    onDragStart: onDragStart
+    onDragStart: onDragStart,
   };
-  window.board = Chessboard('myBoard', config)
-  console.log(chess.fen())
-  updateStatus()
-  
+  window.board = Chessboard("myBoard", config);
+  console.log(chess.fen());
+  updateStatus();
 });

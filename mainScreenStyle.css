@@ -1,33 +1,33 @@
 body {
-    background-color: blanchedalmond;
+  background-color: blanchedalmond;
 }
 
-#logOutButton{
-    border-radius: 5px;
-    width: 100px;
-    background-color: #faebd7;
-    padding: 5px;
+#logOutButton {
+  border-radius: 5px;
+  width: 100px;
+  background-color: #faebd7;
+  padding: 5px;
 }
 
-#logGameButton{
-    border-radius: 5px;
-    width: 100px;
-    background-color: #faebd7;
-    padding: 5px;
+#logGameButton {
+  border-radius: 5px;
+  width: 100px;
+  background-color: #faebd7;
+  padding: 5px;
 }
 
-#top-rightButton{
-    position:absolute;
-    top:0;
-    right:0;
+#top-rightButton {
+  position: absolute;
+  top: 0;
+  right: 0;
 }
 
 .small-board {
-    background-color: transparent;
-    background-repeat: no-repeat;
-    border: none;
+  background-color: transparent;
+  background-repeat: no-repeat;
+  border: none;
 }
 
 .small-board:hover {
-    transform: scale(1.05)
+  transform: scale(1.05);
 }

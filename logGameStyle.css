@@ -7,36 +7,36 @@ body {
   margin: 20px auto;
 }
 
-#backward{
+#backward {
   border-radius: 50px;
   width: 100px;
   background-color: antiquewhite;
   padding: 5px;
 }
 
-#forward{
+#forward {
   border-radius: 50px;
   width: 100px;
   background-color: antiquewhite;
   padding: 5px;
 }
 
-#moveButton{
+#moveButton {
   margin-bottom: 10px;
 }
 
-#status{
+#status {
   margin-bottom: 10px;
 }
 
-#submitButton{
+#submitButton {
   border-radius: 5px;
   width: 100px;
   background-color: #faebd7;
   padding: 5px;
 }
 
-#backButton{
+#backButton {
   background-color: transparent;
   background-repeat: no-repeat;
   border: none;
@@ -45,4 +45,3 @@ body {
   outline: none;
   color: blue;
 }
-
